@@ -1,11 +1,11 @@
-chef
---------
+#chef
+----------
 
-## Ingredient Tagger ##
+## Ingredient Tagger
 
 Note: The dataset is taken from https://github.com/nytimes/ingredient-phrase-tagger, and pre-processing is carried out in a similar fashion. Training in the NY Times implementation uses CRF++. The CRF implementation used here will be python-CRFsuite (also originally in C++), and will use a different feature-set.
 
-#### Problem ####
+#### Problem
 
 While recipe text aims to have a common and structured format, variations and preferences make rule-based parsing (say, with regex) convoluted and cumbersome. For instance, consider the following very similar phrases:
 
@@ -17,7 +17,7 @@ While recipe text aims to have a common and structured format, variations and pr
 
 While the content is roughly the same, variations in how the ingredient phrase can be written make brute-forced parsing difficult.
 
-#### Using an NLP Solution ####
+#### Using an NLP Solution
 
 A more eloquent and generalizable solution is collecting a dataset of labelled ingredients phrases with name, quantities, units, etc. and using natural language processing to implicitly learn the structure and dependencies of ingredient phrases. The problem can be translated as a **sequence prediction** problem.
 
