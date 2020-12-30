@@ -1,5 +1,5 @@
-from chef.tag import tag
-from chef.ingredient import Ingredient
+from tag import tag
+from ingredient import Ingredient
 from recipe_scrapers import scrape_me as scrape
 
 

@@ -1,5 +1,5 @@
 import re
-from chef.constants import *
+from constants import *
 
 # Regex matching integers
 integer_re = r'[0-9]+'

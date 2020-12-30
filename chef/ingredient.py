@@ -1,4 +1,4 @@
-import chef.utils as utils
+import utils as utils
 
 
 class Ingredient:

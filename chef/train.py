@@ -2,7 +2,7 @@ import csv
 import pickle
 import spacy
 import pycrfsuite as crf
-import chef.utils as utils
+import utils as utils
 
 
 def match_labels(entry, nlp):

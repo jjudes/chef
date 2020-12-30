@@ -1,5 +1,5 @@
 import spacy
-import chef.utils as utils
+import utils as utils
 import argparse
 import pycrfsuite as crf
 from recipe_scrapers import scrape_me as scrape
@@ -94,7 +94,7 @@ if __name__ == "__main__":
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('url', nargs=1, type=str, action='store')
-    parser.add_argument('model', nargs='?', type=str, action='store', default='spacymodel.crfsuite')
+    parser.add_argument('model', nargs='?', type=str, action='store', default='model.crfsuite')
     args = parser.parse_args()
 
     try:

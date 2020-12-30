@@ -1,7 +1,9 @@
 __pycache__
+.idea*
 *.pyc
 .DS_Store
 *.ipynb
 *.csv
 *.pkl
 *.crfsuite
+test.*
