@@ -2,7 +2,8 @@ import csv
 import pickle
 import spacy
 import pycrfsuite as crf
-import utils as utils
+import src.utils.parser as parser
+import src.utils.preprocessor as preprocessor
 
 
 def match_labels(entry, nlp):
@@ -16,7 +17,7 @@ def match_labels(entry, nlp):
                - "qty": <the amount of the ingredient, or 0> (float-like)
                - "range_end": <the upper limit if range, or 0> (float-like)
                - "comment": <other specifications> (string)
-        nlp: instance of spacy nlp model
+        nlp: instance of spacy nlp data
 
     Sample Input:
         entry: {"input": "1/2 cup oranges, freshly squeezed"
@@ -37,7 +38,7 @@ def match_labels(entry, nlp):
 
     # Labelled parts
     ingr = [token.lemma_ for token in nlp(entry["name"])]
-    unit = [utils.standardize(token.lemma_) for token in nlp(entry["unit"])]
+    unit = [parser.standardize(token.lemma_) for token in nlp(entry["unit"])]
     #     comment = [token.lower_ for token in nlp(entry["comment"])]
 
     try:
@@ -51,15 +52,15 @@ def match_labels(entry, nlp):
         upr = 0.0
 
     # Numeric components in line
-    numeric = utils.find_numeric(entry["input"])
+    numeric = parser.find_numeric(entry["input"])
 
     # Find numeric component matching qty/upr
     qty_match = upr_match = None
 
     for match in numeric:
-        if qty != 0 and not qty_match and qty == utils.asfloat(match[0]):
+        if qty and not qty_match and qty == parser.asfloat(match[0]):
             qty_match = match
-        if upr != 0 and not upr_match and upr == utils.asfloat(match[0]):
+        if upr and not upr_match and upr == parser.asfloat(match[0]):
             upr_match = match
 
     for token in tokens:
@@ -77,9 +78,9 @@ def match_labels(entry, nlp):
             labels.append("Upper Range")
 
         # Check for other labels
-        elif utils.standardize(token.lemma_) in unit:
+        elif parser.standardize(token.lemma_) in unit:
             labels.append("Unit")
-            unit.remove(utils.standardize(token.lemma_))
+            unit.remove(parser.standardize(token.lemma_))
 
         elif token.lemma_ in ingr:
             labels.append("Ingredient")
@@ -103,7 +104,7 @@ def create_sequence(entry, nlp):
 
     Arguments:
         entry: dictionary-like map to pass into match_labels
-        nlp: instance of spacy nlp model
+        nlp: instance of spacy nlp data
 
     Returns:
         xseq: list of dictionaries containing features
@@ -112,8 +113,8 @@ def create_sequence(entry, nlp):
 
     tokens, labels = match_labels(entry, nlp)
 
-    yseq = utils.biluo_tag(labels)
-    xseq = utils.create_features(tokens)
+    yseq = preprocessor.biluo_tag(labels)
+    xseq = preprocessor.create_features(tokens)
 
     return xseq, yseq
 
@@ -158,13 +159,13 @@ def train_crf(features_path,
               params=None,
               algorithm=None):
     """
-    Train a CRF using python-crfsuite and return resulting model
+    Train a CRF using python-crfsuite and return resulting data
 
     Arguments:
         features_path: path to pickled feature data
         labels_path: path to pickled labels data
-        model_path: path to save resulting CRF model to
-        params: optional dictionary containing parameters for CRF model
+        model_path: path to save resulting CRF data to
+        params: optional dictionary containing parameters for CRF data
         algorithm: optional specification for optimization algorithm used to train
     """
 

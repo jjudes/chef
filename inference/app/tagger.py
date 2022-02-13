@@ -1,5 +1,6 @@
 import spacy
-import utils as utils
+import src.utils.parser as parser
+import src.utils.preprocessor as preprocessor
 import argparse
 import pycrfsuite as crf
 from recipe_scrapers import scrape_me as scrape
@@ -7,11 +8,11 @@ from recipe_scrapers import scrape_me as scrape
 
 def tag(ingredients, model_path, keep_biluo=False):
     """
-    Use specified model to tag components for given list of ingredients
+    Use specified data to tag components for given list of ingredients
 
     Arguments:
-        ingredients: list of strings containing lines of recips
-        model_path: trained CRF model
+        ingredients: list of strings containing lines of recipes
+        model_path: trained CRF data
         keep_biluo: flag indicating whether to keep BILUO tags in labels
 
     Returns:
@@ -27,7 +28,7 @@ def tag(ingredients, model_path, keep_biluo=False):
     for line in ingredients:
 
         tokens = nlp(line)
-        features = utils.create_features(tokens)
+        features = preprocessor.create_features(tokens)
         prediction = tagger.tag(features)
 
         tags = []
@@ -75,6 +76,7 @@ def _join_tags(tags):
 
     return joined
 
+
 def display(ingredients, model_path):
 
     tags = tag(ingredients, model_path)
@@ -90,12 +92,12 @@ def display(ingredients, model_path):
 
 if __name__ == "__main__":
     """
-    Accept a URL and model path via Command Line, scrape recipe and print tagged components
+    Accept a URL and data path via Command Line, scrape recipe and print tagged components
     """
-    parser = argparse.ArgumentParser()
-    parser.add_argument('url', nargs=1, type=str, action='store')
-    parser.add_argument('model', nargs='?', type=str, action='store', default='model.crfsuite')
-    args = parser.parse_args()
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument('url', nargs=1, type=str, action='store')
+    argparser.add_argument('data', nargs='?', type=str, action='store', default='data.crfsuite')
+    args = argparser.parse_args()
 
     try:
         ingredients = scrape(args.url[0]).ingredients()
@@ -107,4 +109,4 @@ if __name__ == "__main__":
         try:
             display(ingredients, args.model)
         except:
-            raise print("Specified model does not exist or is corrupt")
+            raise print("Specified data does not exist or is corrupt")

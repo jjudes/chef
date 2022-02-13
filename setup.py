@@ -6,7 +6,7 @@ def readme():
         return f.read()
 
 
-setup(name='chef',
+setup(name='training',
       version='0.1',
       description='Parse recipes for measurements and ingredients',
       long_description=readme(),
@@ -18,7 +18,7 @@ setup(name='chef',
       author='Jef Judes',
       author_email='jefrey.judes@gmail.com',
       license='MIT',
-      packages=['chef'],
+      packages=['training'],
       install_requires=[
           'spacy',
           'python-crfsuite',

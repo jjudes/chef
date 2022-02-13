@@ -1,8 +1,8 @@
 import argparse
-from recipe import Recipe
+from app.recipe import Recipe
 
 
-def new_list(name, recipe_urls, model_path="model.crfsuite"):
+def new_list(name, recipe_urls, model_path="data.crfsuite"):
 
     recipes = []
     for url in recipe_urls:
@@ -33,8 +33,8 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument('filename', nargs=1, type=str, action='store')
-    parser.add_argument('urls', nargs='+', type=str, action='store', default='model.crfsuite')
-    parser.add_argument('--model', nargs='?', type=str, action='store', default='model.crfsuite')
+    parser.add_argument('urls', nargs='+', type=str, action='store', default='data.crfsuite')
+    parser.add_argument('--data', nargs='?', type=str, action='store', default='data.crfsuite')
 
     args = parser.parse_args()
     if args.filename[0].endswith(".txt"):
