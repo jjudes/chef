@@ -62,3 +62,5 @@ in the sequence into `quantity`, `unit`, etc.
 3. The quantity and units are converted to a standard unit (e.g. grams, millilitres) if possible
 
 4. Consolidate recipe lines with the same `ingredient` and add together the quantities where possible
+
+Note: Based on NYT Cooking's implementation in https://github.com/nytimes/ingredient-phrase-tagger.
